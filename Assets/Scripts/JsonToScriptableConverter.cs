@@ -60,6 +60,20 @@ public class JsonToScriptableConverter : EditorWindow
                 createdItem.Add( itemSO );
 
                 EditorUtility.SetDirty( itemSO );
+
+                if(createDatabase && createdItem.Count > 0 )
+                {
+                    ItemDataBaseSO dataBaseSO = ScriptableObject.CreateInstance<ItemDataBaseSO>();
+                    dataBaseSO.iteams = createdItem;
+
+                    AssetDatabase.CreateAsset(dataBaseSO, $"{outputFolder}/ItemDatabase.asset");
+                    EditorUtility.SetDirty ( dataBaseSO );
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                EditorUtility.DisplayDialog("Sucess", $"Created {createdItem.Count} scriptable dbjects!", "OK");
             }
         }
         catch(System.Exception e)
@@ -69,7 +83,7 @@ public class JsonToScriptableConverter : EditorWindow
         }
     }
 
-    private string jsonFilePaht = "";
+    private string jsonFilePath = "";
     private string outputFolder = "Assets/ScriptableObjects/Items";
     private bool createDatabase = true;
 
@@ -78,6 +92,33 @@ public class JsonToScriptableConverter : EditorWindow
     public static void ShowWindow()
     {
         GetWindow<JsonToScriptableConverter>("JSON to Scriptable Objects");
+    }
+
+    void OnGUI()
+    {
+        GUILayout.Label("JSON to Seriptable object Conerter", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+
+        if(GUILayout.Button("Select JSON File"))
+        {
+            jsonFilePath = EditorUtility.OpenFilePanel("Select JSON File", "", "json");
+        }
+
+        EditorGUILayout.LabelField("Selected File : ", jsonFilePath);
+        EditorGUILayout.Space();
+        outputFolder = EditorGUILayout.TextField("Output Foloder : ", outputFolder);
+        createDatabase = EditorGUILayout.Toggle("Create Databse Asset", createDatabase);
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Convert to Scriptable Odjects"))
+        {
+            if (string.IsNullOrEmpty(jsonFilePath))
+            {
+                EditorUtility.DisplayDialog("Error", "Pease Select a JSON file first", "OK");
+                return;
+            }
+            ConvertJsonToScriptableObjects();
+        }
     }
 }
 
