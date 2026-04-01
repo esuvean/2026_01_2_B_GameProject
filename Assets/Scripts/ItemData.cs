@@ -2,12 +2,12 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ItemData 
+public class ItemData
 {
     public int id;
     public string itemName;
     public string description;
-    public string namaEng;
+    public string nameEng;
     public string itemTypeString;
 
     [NonSerialized]
@@ -18,19 +18,18 @@ public class ItemData
     public bool isStackable;
     public string iconPath;
 
+    //¹®ÀÚ¿­À» ¿­°ÅÇüÀ¸·Î º¯È¯ ÇÏ´Â ¸Ş¼­µå
     public void InitalizeEnums()
     {
-        if (Enum.TryParse(itemTypeString, out ItemType parsedItemType))
+        if(Enum.TryParse(itemTypeString, out ItemType parsedType))
         {
-            itemType = parsedItemType;
+            itemType = parsedType;
         }
         else
         {
-            Debug.LogError($"ì•„ì´í…œ ' {itemName} ì— ìœ íš¨í—ˆì ì•Šì€ ì•„ì´í…œ íƒ€ì… :  {itemTypeString}");
-            //ê¸°ë³¸ê°’ ì„¤ì •
+            Debug.LogError($"¾ÆÀÌÅÛ '{itemName} ¿¡ À¯È¿ÇÏÁö ¾ÊÀº ¾ÆÀÌÅÛ Å¸ÀÔ : {itemTypeString}");
+            //±âº»°ª ¼³Á¤ 
             itemType = ItemType.Consumable;
         }
-
     }
-
 }

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objects/ItemSO")]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "Inventory/Item")]
 public class ItemSO : ScriptableObject
 {
     public int id;
-    public string itemName;
+    public string itemName;    
     public string nameEng;
     public string description;
 
@@ -12,15 +12,16 @@ public class ItemSO : ScriptableObject
     public int price;
     public int power;
     public int level;
-    public bool isStackble;
-    public Sprite icon;
+    public bool isStackable;
+    public Sprite icon;                                     //½ÇÁ¦ »ç¿ëÇÒ ½ºÇÁ¶óÀÌÆ® ¼±¾ð 
 
     public override string ToString()
     {
-        return $"[{id}] {itemName} ({itemType}) = ê°€ê²© : {price}ê³¨ë“œ, ì¸¡ì • : {power}";
+       return $"[{id}] {itemName} ({itemType}) - °¡°Ý : {price} °ñµå, ¼Ó¼º : {power}";
     }
+
     public string DisplayName
     {
-        get { return string.IsNullOrEmpty(nameEng)?itemName : nameEng; }
+        get { return string.IsNullOrEmpty(nameEng) ? itemName : nameEng; }
     }
 }
