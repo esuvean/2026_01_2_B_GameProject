@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b049fadc0a70f7545adcd561d73a8fe1, type: 3}
+  m_Script: {fileID: 11500000, guid: 08c9baebef6e10e4f901c24f1cca2e00, type: 3}
   m_Name: Card_002
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: "\uD790"
   description: "\uAE30\uBCF8 \uD790"
   artwork: {fileID: 21300000, guid: feb8709f10385a94095b55fe8d0f625c, type: 3}
-  manaCost: 0
-  effectAmount: 1
+  manaCost: 3
+  effectAmount: 5
   cardType: 1

@@ -3,20 +3,23 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour
 {
-    public CardData cardData;             // ì¹´ë“œ ë°ì´í„°
-    public int cardIndex;
+    public CardData cardData;                               //Ä«µå µ¥ÀÌÅÍ
+    public int cardIndex;                                   //¼ÕÆä¿¡¼­ÀÇ ÀÎµ¦½º(³ªÁß¿¡ »ç¿ë)
 
-    public MeshRenderer cardRenderer;     // ì¹´ë“œ ë Œë”ëŸ¬
-    public TextMeshPro nameText;          // ì´ë¦„ í…ìŠ¤íŠ¸
-    public TextMeshPro costText;          // ë¹„ìš© í…ìŠ¤íŠ¸
-    public TextMeshPro attackText;        // ê³µê²©ë ¥/íš¨ê³¼ í…ìŠ¤íŠ¸
-    public TextMeshPro descriptionText;   // ì„¤ëª… í…ìŠ¤íŠ¸
+    //3D Ä«µå ¿ä¼Ò 
+    public MeshRenderer cardRenderer;                       //Ä«µå ·£´õ·¯
+    public TextMeshPro nameText;                            //ÀÌ¸§ ÅØ½ºÆ®
+    public TextMeshPro costText;                            //ºñ¿ë ÅØ½ºÆ®
+    public TextMeshPro attackText;                          //°ø°İ·Â/È¿°ú ÅØ½ºÆ®
+    public TextMeshPro descriptionText;                     //¼³¸í ÅØ½ºÆ® 
 
-    private bool isDragging = false;
-    private Vector3 originalPosition;
+    //Ä«µå »óÅÂ 
+    public bool isDragging = false;
+    private Vector3 originalPosition;                       //µå·¡±× Àü ¿øº» À§Ä¡ 
 
-    public LayerMask enemyLayer;
-    public LayerMask playerLayer;
+    //·¹ÀÌ¾î ¸¶½ºÅ© 
+    public LayerMask enemyLayer;                            //Àû ·¹ÀÌ¾î
+    public LayerMask playerLayer;                           //ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î 
 
     public void Start()
     {
@@ -26,62 +29,85 @@ public class CardDisplay : MonoBehaviour
         SetupCard(cardData);
     }
 
+    //Ä«µå µ¥ÀÌÅÍ ¼³Á¤
     public void SetupCard(CardData data)
     {
         cardData = data;
 
+        //3D ÅØ½ºÆ® ¾÷µ¥ÀÌÆ® 
         if (nameText != null) nameText.text = data.cardName;
         if (costText != null) costText.text = data.manaCost.ToString();
         if (attackText != null) attackText.text = data.effectAmount.ToString();
         if (descriptionText != null) descriptionText.text = data.description;
 
-        if (cardRenderer != null && data.artwork != null)
+        //Ä«µå ÅØ½ºÃ³ ¼³Á¤
+        if(cardRenderer != null && data.artwork != null)
         {
             Material cardMaterial = cardRenderer.material;
             cardMaterial.mainTexture = data.artwork.texture;
         }
     }
+
     private void OnMouseDown()
     {
+        //µå·¹±× ½ÃÀÛ ½Ã ¿ø·¡ À§Ä¡ ÀúÀå
         originalPosition = transform.position;
         isDragging = true;
     }
+
     private void OnMouseDrag()
     {
-        if(isDragging)
+        if (isDragging)
         {
+            //¸¶¿ì½º À§Ä¡·Î Ä«µå ÀÌµ¿
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Camera.main.WorldToScreenPoint(transform.position).z;
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
         }
     }
+
     private void OnMouseUp()
     {
+
+        if (CardManager.Instance.playerStats == null || CardManager.Instance.playerStats.currentMana < cardData.manaCost)   //¸¶³ª °Ë»ç
+        {
+            Debug.Log($"¸¶³ª°¡ ºÎÁ·ÇÕ´Ï´Ù.! (ÇÊ¿ä : {cardData.manaCost} , ÇöÀç : {CardManager.Instance.playerStats.currentMana}");
+            transform.position = originalPosition;
+            return;
+        }
+
+
         isDragging = false;
 
+        //·¹ÀÌÄ³½ºÆ®·Î Å¸°Ù °¨Áö
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        //Ä«µå »ç¿ë ÆÇÁ¤ 
         bool cardUsed = false;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, enemyLayer))
+        //Àû À§¿¡ µå·Ó Çß´ÂÁö °Ë»ç 
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity , enemyLayer))
         {
+            //Àû¿¡°Ô °ø°İ È¿°ú Àû¿ë
             CharacterStats enemyStats = hit.collider.GetComponent<CharacterStats>();
 
             if (enemyStats != null)
             {
-                if (cardData.cardType == CardData.CardType.Attack)
+                if(cardData.cardType == CardData.CardType.Attack)           //Ä«µå È¿°ú¿¡ µû¶ó ´Ù¸£°Ô
                 {
+                    //°ø°İ Ä«µå¸é µ¥¹ÌÁö Ãß°¡ 
                     enemyStats.TakeDamage(cardData.effectAmount);
-                    Debug.Log($"{cardData.cardName} ì¹´ë“œë¡œ ì ì—ê²Œ {cardData.effectAmount} ë°ë¯¸ì§€ë¥¼ ì…í˜”ìŠµë‹ˆë‹¤.");
+                    Debug.Log($"{cardData.cardName} Ä«µå·Î Àû¿¡°Ô {cardData.effectAmount} µ¥¹ÌÁö¸¦ ÀÔÇû½À´Ï´Ù. ");
                     cardUsed = true;
                 }
                 else
                 {
-                    Debug.Log("ì´ ì¹´ë“œëŠ” ì ì—ê²Œ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+                    Debug.Log("ÀÌ Ä«µå´Â Àû¿¡°Ô »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù. ");
                 }
             }
+
         }
         else if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerLayer))
         {
@@ -91,24 +117,46 @@ public class CardDisplay : MonoBehaviour
             {
                 if (cardData.cardType == CardData.CardType.Heal)
                 {
+                    //ÈúÄ«µå¸é È¸º¹ÇÏ±â
                     playerStats.Heal(cardData.effectAmount);
-                    Debug.Log($"{cardData.cardName} ì¹´ë“œë¡œ í”Œë ˆì´ì–´ì˜ ì²´ë ¥ì„ {cardData.effectAmount} íšŒë³µí–ˆìŠµë‹ˆë‹¤.");
+                    Debug.Log($"{cardData.cardName} Ä«µå·Î ÇÃ·¹ÀÌ¾îÀÇ Ã¼·ÂÀ»  {cardData.effectAmount} È¸º¹Çß½À´Ï´Ù. ");
                     cardUsed = true;
                 }
                 else
                 {
-                    Debug.Log("ì´ ì¹´ë“œëŠ” í”Œë ˆì´ì–´ì—ê²Œ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+                    Debug.Log("ÀÌ Ä«µå´Â ÇÃ·¹ÀÌ¾î¿¡°Ô »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù. ");
                 }
             }
         }
+        else if(CardManager.Instance != null)
+        {
+            //¹ö¸° Ä«µå ´õ¹Ì ±ÙÃ³¿¡ µå·Ó Çß´ÂÁö °Ë»ç 
+            float distToDiscard = Vector3.Distance(transform.position, CardManager.Instance.discardPosition.position);
+            if (distToDiscard < 2.0f)
+            {
+                //Ä«µå¸¦ ¹ö¸®±â
+                CardManager.Instance.DiscardCard(cardIndex);
+                return;
+            }
+        }
 
+
+        //Ä«µå¸¦ »ç¿ëÇÏÁö ¾ÊÀ¸¸é ¿ø·¡ À§Ä¡·Î µÇµ¹¸®±â
         if (!cardUsed)
         {
             transform.position = originalPosition;
+            CardManager.Instance.ArrangeHand();
         }
         else
         {
-            Destroy(gameObject);
+            //Ä«µå¸¦ »ç¿ëÇß´Ù¸é ¹ö¸° Ä«µå ´õ¹Ì·Î ÀÌµ¿ 
+            if (CardManager.Instance != null)
+                CardManager.Instance.DiscardCard(cardIndex);
+
+            //Ä«µå »ç¿ë ½Ã ¸¶³ª ¼Ò¸ğ (Ä«µå°¡ ¼º°øÀûÀ¸·Î »ç¿ëµÈ ÈÄ Ãß°¡)
+            CardManager.Instance.playerStats.UseMana(cardData.manaCost);
+            Debug.Log($"¸¶³ª¸¦ {cardData.manaCost} »ç¿ë Çß½À´Ï´Ù. ");
         }
     }
 }
+

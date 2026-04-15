@@ -1,39 +1,39 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCard", menuName = "Card/Card Data")]
+[CreateAssetMenu(fileName = "NewCard" , menuName = "Card/Card Data")]
 public class CardData : ScriptableObject
 {
-    public enum CardType
+    public enum CardType                                    //Ä«µå Å¸ÀÔ ¿­°ÅÇü Ãß°¡
     {
-        Attack,   // ê³µê²© ì¹´ë“œ
-        Heal,     // íšŒë³µ ì¹´ë“œ
-        Buff,     // ë²„í”„ ì¹´ë“œ
-        Utility   // ìœ í‹¸ë¦¬í‹° ì¹´ë“œ
+        Attack,                                             //°ø°İ Ä«µå
+        Heal,                                               //È¸º¹ Ä«µå
+        Buff,                                               //¹öÇÁ Ä«µå
+        Utility                                             //À¯Æ¿¸®Æ¼ Ä«µå 
     }
 
-    public string cardName;       // ì¹´ë“œ ì´ë¦„
-    public string description;    // ì¹´ë“œ ì„¤ëª…
-    public Sprite artwork;        // ì¹´ë“œ ì´ë¯¸ì§€
-    public int manaCost;          // ë§ˆë‚˜ ë¹„ìš©
-    public int effectAmount;      // íš¨ê³¼ ê°’ (ê³µê²©ë ¥ ë“±)
-    public CardType cardType;     // ì¹´ë“œ íƒ€ì…
+    public string cardName;                                 //Ä«µå ÀÌ¸§
+    public string description;                              //Ä«µå ¼³¸í
+    public Sprite artwork;                                  //Ä«µå ÀÌ¹ÌÁö
+    public int manaCost;                                    //¸¶³ª ºñ¿ë
+    public int effectAmount;                                //È¿°ú °ª (°ø°İ·Â)
+    public CardType cardType;                               //Ä«µå Å¸ÀÔ
 
-    public Color GetCardColor()
+    public Color GetCardColor()                             //Å¸ÀÔ¿¡ µû¸¥ Ä«µå »ö»ó
     {
         switch (cardType)
-        {
+        { 
             case CardType.Attack:
-                return new Color(0.9f, 0.3f, 0.3f);   // ë¹¨ê°•
+                return new Color(0.9f, 0.3f, 0.3f);             //»¡°­
 
             case CardType.Heal:
-                return new Color(0.3f, 0.9f, 0.3f);   // ë…¹ìƒ‰
+                return new Color(0.3f, 0.9f, 0.3f);             //³ì»ö
 
             case CardType.Buff:
-                return new Color(0.9f, 0.3f, 0.9f);   // ë³´ë¼
+                return new Color(0.9f, 0.3f, 0.9f);             //ÆÄ¶û
 
             case CardType.Utility:
-                return new Color(0.9f, 0.9f, 0.3f);   // ë…¸ë‘
-
+                return new Color(0.9f, 0.9f, 0.3f);             //³ë¶û
+            
             default:
                 return Color.white;
         }
