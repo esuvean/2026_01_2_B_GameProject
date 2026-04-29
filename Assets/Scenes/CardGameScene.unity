@@ -1024,15 +1024,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8fa1057e792a924bba6e32ec60ac07f, type: 2}
   - {fileID: 11400000, guid: 99d89f5a3f85d404994ec3df19ce984d, type: 2}
   - {fileID: 11400000, guid: 4e6a09b289b22b5498c6cc50d2ad1305, type: 2}
-  - {fileID: 11400000, guid: f8fa1057e792a924bba6e32ec60ac07f, type: 2}
-  - {fileID: 11400000, guid: 99d89f5a3f85d404994ec3df19ce984d, type: 2}
-  - {fileID: 11400000, guid: 4e6a09b289b22b5498c6cc50d2ad1305, type: 2}
-  - {fileID: 11400000, guid: f8fa1057e792a924bba6e32ec60ac07f, type: 2}
-  - {fileID: 11400000, guid: 99d89f5a3f85d404994ec3df19ce984d, type: 2}
-  - {fileID: 11400000, guid: 4e6a09b289b22b5498c6cc50d2ad1305, type: 2}
-  - {fileID: 11400000, guid: f8fa1057e792a924bba6e32ec60ac07f, type: 2}
-  - {fileID: 11400000, guid: 99d89f5a3f85d404994ec3df19ce984d, type: 2}
-  - {fileID: 11400000, guid: 4e6a09b289b22b5498c6cc50d2ad1305, type: 2}
+  - {fileID: 11400000, guid: dde6724eadc9e5b43a14e3a3472ed8c8, type: 2}
+  - {fileID: 11400000, guid: d1105d0f0ba38b747af18f33478b8842, type: 2}
+  - {fileID: 11400000, guid: b14aa7e216f51624896002621ef32e5a, type: 2}
+  - {fileID: 11400000, guid: dde6724eadc9e5b43a14e3a3472ed8c8, type: 2}
+  - {fileID: 11400000, guid: d1105d0f0ba38b747af18f33478b8842, type: 2}
+  - {fileID: 11400000, guid: b14aa7e216f51624896002621ef32e5a, type: 2}
+  - {fileID: 11400000, guid: dde6724eadc9e5b43a14e3a3472ed8c8, type: 2}
+  - {fileID: 11400000, guid: d1105d0f0ba38b747af18f33478b8842, type: 2}
+  - {fileID: 11400000, guid: b14aa7e216f51624896002621ef32e5a, type: 2}
   handCards: []
   discardCards: []
   cardPrefabs: {fileID: 2220998542730806215, guid: ef6270cd60e7b2d4380b7ba67011d814, type: 3}
@@ -1041,6 +1041,7 @@ MonoBehaviour:
   discardPosition: {fileID: 720509895}
   cardObjects: []
   playerStats: {fileID: 128781205}
+  EnemyStats: {fileID: 624773645}
 --- !u!4 &1671584826
 Transform:
   m_ObjectHideFlags: 0
